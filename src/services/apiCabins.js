@@ -27,18 +27,18 @@ export async function createCabin(newData) {
     "/",
     ""
   );
-
   const imagePath = `https://srkbaoptowgshssvcezg.supabase.co/storage/v1/object/sign/cabin-images/${imageName}`;
+  const file = newData.image[0];
+  const correctTypeFile = new File([file], file.name, { type: "image/jpeg" });
 
-  console.log(imagePath);
-
+  // Upload the image with the correct MIME type
   const { error: storageError } = await supabase.storage
     .from("cabin-images")
-    .upload(imageName, newData.image);
+    .upload(imageName, correctTypeFile); // Make sure to use correctTypeFile here
 
   if (storageError) {
-    console.log(storageError.message);
-    throw Error("the image could not be added to the storage");
+    console.error(storageError.message);
+    throw new Error("Image could not be uploaded");
   }
 
   const { data, error } = await supabase
