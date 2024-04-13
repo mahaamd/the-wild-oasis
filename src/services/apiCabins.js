@@ -1,4 +1,4 @@
-import supabase from "./supbase";
+import supabase, { supabaseUrl } from "./supbase";
 
 export async function getCabins() {
   const { data, error } = await supabase.from("cabins").select("*");
@@ -27,19 +27,20 @@ export async function createCabin(newData) {
     "/",
     ""
   );
+
   const imagePath = `https://srkbaoptowgshssvcezg.supabase.co/storage/v1/object/sign/cabin-images/${imageName}`;
 
-  // First, try uploading the image
+  console.log(imagePath);
+
   const { error: storageError } = await supabase.storage
     .from("cabin-images")
     .upload(imageName, newData.image);
 
   if (storageError) {
-    console.error(storageError.message);
-    throw new Error("Image could not be uploaded");
+    console.log(storageError.message);
+    throw Error("the image could not be added to the storage");
   }
 
-  // After successful image upload, insert the cabin data
   const { data, error } = await supabase
     .from("cabins")
     .insert([{ ...newData, image: imagePath }])
@@ -47,7 +48,7 @@ export async function createCabin(newData) {
 
   if (error) {
     console.error(error.message);
-    throw new Error("Cabins could not be added to list");
+    throw Error("cabins could not be added to list");
   }
 
   return data;
