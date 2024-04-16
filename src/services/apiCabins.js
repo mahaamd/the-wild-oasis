@@ -22,34 +22,29 @@ export async function deleteCabin(id) {
   return data;
 }
 
-export async function createCabin(newData) {
+export async function createEditCabin(newData) {
+  // Check if there's an image in the incoming data and handle the upload
+
+  //if (newData.image && newData.image[0]) {
   const imageName = `${Math.random()}-${newData.image[0].name}`.replace(
     "/",
     ""
   );
-  const imagePath = `https://srkbaoptowgshssvcezg.supabase.co/storage/v1/object/sign/cabin-images/${imageName}`;
-  const file = newData.image[0];
-  const correctTypeFile = new File([file], file.name, { type: "image/jpeg" });
+  const imagePath = `https://srkbaoptowgshssvcezg.supabase.co/storage/v1/object/public/cabin-images/${imageName}`;
 
-  // Upload the image with the correct MIME type
-  const { error: storageError } = await supabase.storage
-    .from("cabin-images")
-    .upload(imageName, correctTypeFile); // Make sure to use correctTypeFile here
+  // Prepare the data to be inserted
+  const cabinData = { ...newData, image: imagePath };
 
-  if (storageError) {
-    console.error(storageError.message);
-    throw new Error("Image could not be uploaded");
-  }
-
-  const { data, error } = await supabase
-    .from("cabins")
-    .insert([{ ...newData, image: imagePath }])
-    .select();
-
-  if (error) {
+  // Attempt to insert the new cabin into the database
+  try {
+    const { data, error } = await supabase.from("cabins").insert([cabinData]);
+    if (error) {
+      console.error(error.message);
+      throw new Error("Cabin could not be added to the list");
+    }
+    return data;
+  } catch (error) {
     console.error(error.message);
-    throw Error("cabins could not be added to list");
+    throw new Error("Operation failed");
   }
-
-  return data;
 }
