@@ -8,11 +8,15 @@ import { useForm } from "react-hook-form";
 import FormRow from "../../ui/FormRow";
 import useCreateCabinForm from "./useCreateCabinForm";
 
-function CreateCabinForm() {
-  // const { id: editId, ...editValues } = cabinToEdit;
+function CreateCabinForm({ cabinToEdit = {} }) {
+  const { id: editId, ...editValues } = cabinToEdit;
+  const isEditing = Boolean(editId);
+
   const { mutate, isLoading } = useCreateCabinForm();
 
-  const { register, handleSubmit, getValues, formState } = useForm();
+  const { register, handleSubmit, getValues, formState } = useForm({
+    defaultValues: isEditing ? editValues : {},
+  });
 
   const { errors } = formState;
   console.log(errors);
@@ -90,7 +94,7 @@ function CreateCabinForm() {
           id="image"
           accept="image/*"
           {...register("image", {
-            required: /*editId ? false : */ "this field is reqired",
+            required: isEditing ? false : "this field is reqired",
           })}
         />
       </FormRow>
@@ -100,7 +104,7 @@ function CreateCabinForm() {
         <Button disabled={isLoading} variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button>{/*editId ? "edit cabin" :*/ "add cabin"}</Button>
+        <Button>{isEditing ? "edit cabin" : "add cabin"}</Button>
       </FormRow>
     </Form>
   );
