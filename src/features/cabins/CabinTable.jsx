@@ -43,15 +43,15 @@ export default function CabinTable() {
   if (isLoading) return <Spinner />;
 
   return (
-    <Table role="table">
-      <TableHeader>
+    <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      <Table.Header>
         <div></div>
         <div>cabin</div>
         <div>capacity</div>
         <div>price</div>
         <div>discount</div>
         <div></div>
-      </TableHeader>
+      </Table.Header>
       {cabins.map((item) => (
         <CabinRow cabin={item} key={item.id} />
       ))}

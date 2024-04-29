@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import FormRow from "../../ui/FormRow";
 import useCreateCabinForm from "./useCreateCabinForm";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditing = Boolean(editId);
 
@@ -26,12 +26,14 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   };
 
   const onSubmit = (data) => {
-    // console.log(data.image[0]);
     mutate(data);
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label={"cabin name"} error={errors?.name?.message}>
         <Input
           type="text"
@@ -101,7 +103,12 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button disabled={isLoading} variation="secondary" type="reset">
+        <Button
+          disabled={isLoading}
+          variation="secondary"
+          type="reset"
+          onClick={onCloseModal}
+        >
           Cancel
         </Button>
         <Button>{isEditing ? "edit cabin" : "add cabin"}</Button>

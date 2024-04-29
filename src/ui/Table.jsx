@@ -58,3 +58,15 @@ const Empty = styled.p`
   text-align: center;
   margin: 2.4rem;
 `;
+
+export default function Table() {
+  return <div>Table</div>;
+}
+
+function Header() {}
+function Row() {}
+function Body() {}
+
+Table.Header = Header;
+Table.Row = Row;
+Table.Body = Body;
