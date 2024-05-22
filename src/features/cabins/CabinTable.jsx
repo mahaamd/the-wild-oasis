@@ -2,17 +2,18 @@ import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import useCabins from "./useCabins";
+import Table from "../../ui/Table";
 
-const Table = styled.div`
-  border: 1px solid var(--color-grey-200);
+// const Table = styled.div`
+//   border: 1px solid var(--color-grey-200);
 
-  width: 100%;
+//   width: 100%;
 
-  font-size: 1.4rem;
-  background-color: var(--color-grey-0);
-  border-radius: 7px;
-  overflow: hidden;
-`;
+//   font-size: 1.4rem;
+//   background-color: var(--color-grey-0);
+//   border-radius: 7px;
+//   overflow: hidden;
+// `;
 
 const TableHeader = styled.header`
   display: grid;
@@ -52,9 +53,10 @@ export default function CabinTable() {
         <div>discount</div>
         <div></div>
       </Table.Header>
-      {cabins.map((item) => (
-        <CabinRow cabin={item} key={item.id} />
-      ))}
+      <Table.Body
+        data={cabins}
+        render={(item) => <CabinRow cabin={item} key={item.id} />}
+      />
     </Table>
   );
 }

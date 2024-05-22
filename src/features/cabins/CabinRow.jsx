@@ -5,6 +5,7 @@ import useDeleteCabin from "./useDeleteCabin";
 import CreateCabinForm from "./CreateCabinForm";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Menues from "../../ui/Menus";
 
 const TableRow = styled.div`
   display: grid;
@@ -91,6 +92,18 @@ export default function CabinRow({ cabin }) {
               />
             </Modal.Window>
           </Modal>
+          <Menues>
+            <Menues.Menu>
+              <Menues.Toggle id={cabinId}>
+                <Menues.List>
+                  <Menues.Button>Dupalicate</Menues.Button>
+                  <Menues.Button>Delete</Menues.Button>
+                  <Menues.Button>Edit</Menues.Button>
+                  {/* <Menues.Button></Menues.Button> */}
+                </Menues.List>
+              </Menues.Toggle>
+            </Menues.Menu>
+          </Menues>
         </div>
       </TableRow>
     </>
